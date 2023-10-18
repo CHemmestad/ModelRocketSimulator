@@ -31,20 +31,17 @@ double F_thrust(CurrentData* current) {
 double F_airBrakes(CurrentData* current) {
     double force;
     switch(current->airBrakeState) {
-        case 3:
-            //printf("airbrakes state : 3\n");
+        case HIGH:
             //I dont know how big the airbraakes are and how many there are going to be
             force = 4*((current->airDensity*PLATE_DRAGCO*DIAMETER/2*DIAMETER/(2*2)*pow(current->velocity, 2))/2);
             break;
-        case 2:
-            //printf("airbrakes state : 2\n");
+        case MEDIUM:
             force = 4*((current->airDensity*PLATE_DRAGCO*DIAMETER/2*DIAMETER/(2*4)*pow(current->velocity, 2))/2);
             break;
-        case 1:
-            //printf("airbrakes state : 1\n");
+        case LOW:
             force = 4*((current->airDensity*PLATE_DRAGCO*DIAMETER/2*DIAMETER/(2*8)*pow(current->velocity, 2))/2);
             break;
-        case 0:
+        case OFF:
             //printf("airbrakes state : 0\n");
             force = 0;
             break;

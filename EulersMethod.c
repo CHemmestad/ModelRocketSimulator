@@ -34,9 +34,9 @@ int main() {
         runPredictions(predicted);
         deviation(predicted, current);
     }
-
     printMaxMetric(current);
     printMaxImperial(current);
+
     free(predicted);
     free(current);
 
@@ -47,7 +47,7 @@ int main() {
 }
 
 void runPredictions(CurrentData* predicted) {
-    while(predicted->height > -0.1) {
+    while(predicted->velocity >= 0.0) {
         newAcceleration(predicted);
         newVelocity(predicted);
         newHeight(predicted);

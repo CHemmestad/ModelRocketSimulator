@@ -1,6 +1,8 @@
 #ifndef EUHLERS_METHOD_H
 #define EUHLERS_METHOD_H
 
+typedef enum State {OFF, LOW, MEDIUM, HIGH} State;
+
 typedef struct CurrentData {
     double maxAcceleration;
     double maxVelocity;
@@ -13,7 +15,7 @@ typedef struct CurrentData {
     double time;
     double mass;
     double thrust;
-    int airBrakeState; //3 high 2 medium 1 low 0 off
+    State airBrakeState;
 } CurrentData;
 
 void newAcceleration(CurrentData* current);

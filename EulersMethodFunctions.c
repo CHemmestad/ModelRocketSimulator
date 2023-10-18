@@ -2,6 +2,8 @@
 #include "RocketSpecs.h"
 #include "Constants.h"
 #include "Forces.h"
+#include <math.h>
+#include <stdio.h>
 
 double findMax(double max, double current) {
     if(current > max) {
@@ -20,23 +22,23 @@ void initialize(CurrentData* current) {
     current->height = 0;
     current->temp = 0;
     current->time = 0;
-    current->airDensity = AIR_DENSITY;
+    current->airDensity = 0;
     current->mass = TOTAL_MASS;
     current->thrust = 0;
-    current->airBrakeState = 0;
+    current->airBrakeState = OFF;
 }
 void deviation(CurrentData* predicted, CurrentData* current) {
     double deviation;
     deviation = TARGET/predicted->maxHeight;
     if(current->time > BURN_TIME) {
         if(deviation < .98) {
-            current->airBrakeState = 3;
+            current->airBrakeState = HIGH;
         } else if(deviation < .995) {
-            current->airBrakeState = 2;
+            current->airBrakeState = MEDIUM;
         } else if(deviation < 1) {
-            current->airBrakeState = 1;
+            current->airBrakeState = LOW;
         } else {
-            current->airBrakeState = 0;
+            current->airBrakeState = OFF;
         }
     }
 }
@@ -72,10 +74,12 @@ void newMass(CurrentData* current) {
     }
 }
 void newAirDensity(CurrentData* current) {
-    current->airDensity = AIR_DENSITY - current->height*DELTA_AIR_DENSITY;
-    if(current->airDensity < 0) {
-        current->airDensity = 0;
-    }
+    double x = current->height;
+    double A = STARTING_AIR_DENSITY;
+    double B = -0.0001131;
+    double C = 3.565E-9;
+    double D = -3.749E-14;
+    current->airDensity = A + B*x + C*pow(x, 2) + D*pow(x, 3);
 }
 void addTime(CurrentData* current) {
     current->time = current->time+TIME_STEP;
